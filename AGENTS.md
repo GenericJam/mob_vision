@@ -1,9 +1,8 @@
 # Agent instructions
 
 This repo is a mob plugin (on-device OCR / text recognition; face/pose
-planned). Conventions are mob's — read `~/code/mob/AGENTS.md` +
-`~/code/mob/CLAUDE.md` first, and `~/code/mob/MOB_PLUGINS.md` for the
-manifest schema.
+planned). Conventions are mob's — read `~/code/mob/AGENTS.md` first, and
+`~/code/mob/MOB_PLUGINS.md` for the manifest schema.
 
 Pre-commit checklist (same as mob):
 
