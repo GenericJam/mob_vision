@@ -6,7 +6,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Versioning: [S
 
 ---
 
-## [Unreleased]
+## [0.1.3] - 2026-10-09
 
 ### Added
 - **On-device self-test** (MOB-418). `MobVision.SelfTest` implements
@@ -18,14 +18,18 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Versioning: [S
   `MobVisionBridge` on Android. Error deliveries (`no_activity`, `no_image`,
   the recognizer's message), other text and no answer in 15 s fail; the file
   is deleted afterwards. Run it with `mix mob.selftest` from a host app
-  (mob_dev 0.7.17). Requires mob 0.9.15; `mob_version` in the manifest is now
-  `~> 0.9`.
-- **Android: the NIF reports an unregistered bridge.** `recognize_text/1`
+  (mob_dev 0.7.17).
+
+### Changed
+- Requires mob >= 0.9.15 (was `~> 0.7`), for `Mob.Plugin.SelfTest`;
+  `mob_version` in the manifest is now `~> 0.9` (was `~> 0.7`).
+- **Android: an unregistered bridge no longer aborts the app.** `recognize_text/1`
   answers `{:error, :bridge_not_registered}` when
   `MobVisionBridge.register()` never ran or the method-ID lookup failed,
   instead of calling JNI with a null class / method ID.
-  `MobVision.recognize_text/3` is unchanged (it ignores the return value);
-  the self-test turns it into a failure.
+  `MobVision.recognize_text/3` still returns the socket; with an
+  unregistered bridge it now sends no `{:vision, _, _}` message. The
+  self-test turns the error into a failure.
 
 ## [0.1.2] - 2026-10-04
 
