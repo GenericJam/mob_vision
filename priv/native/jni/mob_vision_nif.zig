@@ -57,9 +57,19 @@ inline fn pidFromLong(jpid: jni.JLong) erts.ErlNifPid {
     return .{ .pid = low };
 }
 
+/// {error, bridge_not_registered}: nativeRegister never ran (MobPluginBootstrap
+/// did not call register()) or the method-ID lookup failed. Without this guard
+/// the call below would hand JNI a null jclass / method ID and abort the VM.
+/// The public API ignores the return value; MobVision.SelfTest turns it into a
+/// failure (MOB-418).
+fn bridgeNotRegistered(env: ?*erts.ErlNifEnv) erts.ERL_NIF_TERM {
+    return erts.makeTuple(env, .{ erts.atom(env, "error"), erts.atom(env, "bridge_not_registered") });
+}
+
 /// Call `MobVisionBridge.<method>(pid_long, arg)` — async; the result lands
-/// later via the deliver thunks. Returns :ok unconditionally.
+/// later via the deliver thunks. Returns :ok once the call is made.
 fn callBridgePidStr(env: ?*erts.ErlNifEnv, method: jni.JMethodID, pid: erts.ErlNifPid, arg: ?[*:0]const u8) erts.ERL_NIF_TERM {
+    if (g_vision_cls == null or method == null) return bridgeNotRegistered(env);
     var attached: c_int = 0;
     const jenv = get_jenv(&attached) orelse return erts.atom(env, "error");
     const jarg: jni.JString = if (arg) |a| jni.newStringUTF(jenv, a) else null;

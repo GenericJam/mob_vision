@@ -68,6 +68,10 @@ mix test         # manifest + NIF-stub agreement (host-runnable; no device)
 Native changes (`.m` / `.zig` / `.kt`) aren't exercised by `mix test` — verify
 on device with `mix mob.deploy --native` of a host app.
 
+On-device self-test: run `mix mob.selftest` from a host app that depends on
+mob_vision (mob_dev >= 0.7.17); `MobVision.SelfTest` OCRs a generated image
+of the word `LEFT` on the device.
+
 ## License
 
 MIT

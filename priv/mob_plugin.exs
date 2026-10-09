@@ -1,8 +1,11 @@
 %{
   name: :mob_vision,
-  mob_version: "~> 0.7",
+  mob_version: "~> 0.9",
   plugin_spec_version: 1,
   description: "On-device OCR / text recognition (iOS Vision, Android ML Kit)",
+  # On-device proof for `mix mob.selftest` / mob_ci: recognize_text/1 on a PNG
+  # of the word LEFT it writes and deletes (see Mob.Plugin.SelfTest).
+  selftest: MobVision.SelfTest,
   nifs: [
     # iOS: Objective-C NIF — the Vision framework (VNRecognizeTextRequest) run
     # on a CGImage loaded from the file path. lang: :objc -> compiled -fobjc-arc;
