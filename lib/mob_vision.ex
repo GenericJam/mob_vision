@@ -31,7 +31,8 @@ defmodule MobVision do
   Recognize text in the image at `path` (a local file: JPEG / PNG / HEIC).
 
   Returns the socket unchanged (fire-and-forget); the result is delivered
-  asynchronously as `{:vision, :text, map}` or `{:vision, :error, reason}`.
+  asynchronously as `{:vision, :text, text}` (`text` is the recognized text,
+  a `String.t()`, lines joined with newlines) or `{:vision, :error, reason}`.
 
   Options:
     - `languages: [String.t()]` — BCP-47 language hints (e.g. `["en", "fr"]`).
